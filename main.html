@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        window.onload = function () {
+          
+            var username = localStorage.getItem("username");
+
+           
+            document.getElementById("username").innerHTML = "Hello, " + username + " " + "Welcome to the MegaCart";
+            const d = new Date();
+            d.setFullYear(2024);
+            document.getElementById("date").innerHTML = d;
+            const logoutLink = document.getElementById("logout-link");
+        logoutLink.addEventListener("click", function () {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = "index.html";
+        });
+        const viewCart = document.getElementById("cart");
+        viewCart.addEventListener("click", function () {
+            window.location.href = "buy-item.html";
+        });
+        const itemContainer = document.querySelector('.item-container');
+  
+
+
+itemContainer.addEventListener('click', (event) => {
+
+  const selectedItem = event.target.closest('.item');
+  const itemName = selectedItem.dataset.name;
+  const itemCost = parseFloat(selectedItem.dataset.cost);
+  const itemDelivery = parseInt(selectedItem.dataset.delivery);
+
+
+  const itemObject = {
+    name: itemName,
+    cost: itemCost,
+    delivery: itemDelivery,
+    image: selectedItem.querySelector('img').src
+  };
+
+  const existingItems = JSON.parse(localStorage.getItem('items')) || [];
+
+
+  existingItems.push(itemObject);
+
+  
+  localStorage.setItem('items', JSON.stringify(existingItems));
+
+ 
+  const alertMessage = `You selected ${itemName}. Cost: $${itemCost.toFixed(2)}. Delivery: ${itemDelivery} days.`;
+  alert(alertMessage);
+});
+        }
+    </script>
+</head>
+
+<body>
+    <h1 id="username"></h1>
+    <p id="date"></p>
+
+    <button id="logout-link" style="position: fixed;top: 0; right: 0;">Logout</button>
+    <button id="cart"style=" display: flex;justify-content: center;align-items: center;">view cart</button>
+
+
+    <div class="item-container">
+    <div class="item" data-name="Clothes" data-cost="10.99" data-delivery="3">
+      <img src="/images/clothing.jpg" alt="Clothes">
+    </div>
+    <div class="item" data-name="footwear" data-cost="5.99" data-delivery="5">
+      <img src="/images/footwear.jpg" alt="footwear">
+    </div>
+    <div class="item" data-name="health" data-cost="20.99" data-delivery="1">
+      <img src="/images/health.jpg" alt="health">
+    </div>
+    <div class="item" data-name="school" data-cost="20.99" data-delivery="1">
+        <img src="/images/school.jpg" alt="school">
+      </div>
+  </div>
+   
+
+</body>
+
+</html>

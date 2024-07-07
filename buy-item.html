@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+    <h1 id="username"></h1>
+    <p id="date"></p>
+
+    <button id="logout-link" style="position: fixed;top: 0; right: 0;">Logout</button>
+
+
+    <script>
+         window.onload = function () {
+           
+            var username = localStorage.getItem("username");
+
+            document.getElementById("username").innerHTML = "Thank you, " + username + " " + "For shopping from Mega-Cart";
+            const d = new Date();
+            d.setFullYear(2020);
+            document.getElementById("date").innerHTML = d;
+            const logoutLink = document.getElementById("logout-link");
+        logoutLink.addEventListener("click", function () {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = "index.html";
+        });
+      
+const items = JSON.parse(localStorage.getItem('items')) || [];
+
+const itemList = document.createElement('ul');
+
+let totalCost = 0;
+items.forEach(item => {
+ 
+  const listItem = document.createElement('li');
+
+  listItem.innerHTML = `
+    <img src="${item.image}" alt="${item.name}">
+    <div>
+      <p>${item.name}</p>
+      <p>Cost: $${item.cost.toFixed(2)}</p>
+      <p>Delivery: ${item.delivery} days</p>
+    </div>
+  `;
+
+  itemList.appendChild(listItem);
+
+  totalCost += item.cost;
+});
+
+const totalCostRounded = Math.ceil(totalCost * 100) / 100;
+itemList.innerHTML += `<li>Total Cost: $${totalCostRounded.toFixed(2)}</li>`;
+
+const cartContainer = document.createElement('div');
+cartContainer.appendChild(itemList);
+document.body.appendChild(cartContainer);
+         }
+
+    </script>
+</body>
+</html>
